@@ -2,7 +2,7 @@ name: Build Lesspass Server
 
 on:
   push:
-    branches: [master]
+    branches: [main]
     paths:
       - '.github/workflows/build-lesspass-server.yml'
       - 'build-lesspass-server.sh'
