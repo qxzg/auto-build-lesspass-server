@@ -41,6 +41,7 @@ jobs:
       - name: Load custom configuration
         env:
           CONTAINER_DOMAIN: ${{ secrets.CONTAINER_DOMAIN }}
+          ALI_CONTAINER_URL: ${{ secrets.ALI_CONTAINER_URL }}
           CONTAINER_PATH: ${{ secrets.CONTAINER_PATH }}
           DEFAULT_FROM_EMAIL: ${{ secrets.DEFAULT_FROM_EMAIL }}
           EMAIL_HOST: ${{ secrets.EMAIL_HOST }}
@@ -78,7 +79,7 @@ jobs:
         if: github.event.inputs.SSH == 'true'
         env:
           ALI_LOGIN: ${{ secrets.ALI_DOCKER_REGISTRY_LOGIN }}
-          CONTAINER_URL: ${{ secrets.ALI_CONTAINER_URL }}
+          ALI_CONTAINER_URL: ${{ secrets.ALI_CONTAINER_URL }}
           # After sign up on the https://ngrok.com
           # You can find this token here: https://dashboard.ngrok.com/auth/your-authtoken
           NGROK_TOKEN: ${{ secrets.NGROK_TOKEN }}
@@ -95,19 +96,19 @@ jobs:
         if: github.event.inputs.PUSH_CONTAINERS == 'true' && !cancelled()
         env:
           ALI_LOGIN: ${{ secrets.ALI_DOCKER_REGISTRY_LOGIN }}
-          CONTAINER_URL: ${{ secrets.ALI_CONTAINER_URL }}
+          ALI_CONTAINER_URL: ${{ secrets.ALI_CONTAINER_URL }}
         run: |
           docker images
           docker login $ALI_LOGIN
-          docker tag $CONTAINER_URL/lesspass-frontend $CONTAINER_URL/lesspass-frontend:actions
-          docker tag $CONTAINER_URL/lesspass-backend $CONTAINER_URL/lesspass-backend:actions
-          docker push $CONTAINER_URL/lesspass-frontend:actions
-          docker push $CONTAINER_URL/lesspass-backend:actions
+          docker tag $ALI_CONTAINER_URL/lesspass-frontend $ALI_CONTAINER_URL/lesspass-frontend:actions
+          docker tag $ALI_CONTAINER_URL/lesspass-backend $ALI_CONTAINER_URL/lesspass-backend:actions
+          docker push $ALI_CONTAINER_URL/lesspass-frontend:actions
+          docker push $ALI_CONTAINER_URL/lesspass-backend:actions
 
       - name: Copy Wed Directory
         if: github.event.inputs.UPLOAD_WED_DIRECTORY == 'true' && !cancelled()
         run: |
-          docker run -i -t -d $CONTAINER_URL/lesspass-frontend
+          docker run -i -t -d $ALI_CONTAINER_URL/lesspass-frontend
           docker cp $(docker ps -q):/usr/share/nginx/html ./
           docker rm -f $(docker ps -q)
 
@@ -120,10 +121,10 @@ jobs:
 
       - name: Test containers
         env:
-          CONTAINER_URL: ${{ secrets.ALI_CONTAINER_URL }}
+          ALI_CONTAINER_URL: ${{ secrets.ALI_CONTAINER_URL }}
         run: |
-          docker run -itd -p 45628:45628 $CONTAINER_URL/lesspass-backend
-          docker run -itd -p 45629:45629 $CONTAINER_URL/lesspass-frontend
+          docker run -itd -p 45628:45628 $ALI_CONTAINER_URL/lesspass-backend
+          docker run -itd -p 45629:45629 $ALI_CONTAINER_URL/lesspass-frontend
           sleep 20
           curl --connect-timeout 5 --retry 2 http://127.0.0.1:45628
           curl --connect-timeout 5 --retry 2 http://127.0.0.1:45629
