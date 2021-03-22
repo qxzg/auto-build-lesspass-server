@@ -27,9 +27,6 @@ on:
 #  watch:
 #    types: started
 
-env:
-  CONTAINER_URL: ${{ secrets.ALI_CONTAINER_URL }}
-
 jobs:
   build:
     runs-on: ubuntu-20.04
@@ -97,6 +94,7 @@ jobs:
         if: github.event.inputs.PUSH_CONTAINERS == 'true' && !cancelled()
         env:
           ALI_LOGIN: ${{ secrets.ALI_DOCKER_REGISTRY_LOGIN }}
+          CONTAINER_URL: ${{ secrets.ALI_CONTAINER_URL }}
         run: |
           docker images
           docker login $ALI_LOGIN
