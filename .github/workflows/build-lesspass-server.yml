@@ -118,6 +118,8 @@ jobs:
           path: ./html/
 
       - name: Test containers
+        env:
+          CONTAINER_URL: ${{ secrets.ALI_CONTAINER_URL }}
         run: |
           docker run -itd -p 45628:45628 $CONTAINER_URL/lesspass-backend
           docker run -itd -p 45629:45629 $CONTAINER_URL/lesspass-frontend
