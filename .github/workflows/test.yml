@@ -59,9 +59,12 @@ jobs:
       - name: login
         env:
           ALI_LOGIN: ${{ secrets.ALI_DOCKER_REGISTRY_LOGIN }}
+          ALI_USERNAME: ${{ secrets.ALI_USERNAME }}
+          ALI_PASSWORD: ${{ secrets.ALI_PASSWORD }}
+          ALI_LOGIN_URL: ${{ secrets.ALI_LOGIN_URL }}
         run: |
           docker images
-          docker login $ALI_LOGIN
+          docker login --username="${ALI_USERNAME}" --password "${ALI_PASSWORD}" ${ALI_LOGIN_URL}
 
       - name: Start SSH via tmate
         uses: P3TERX/ssh2actions@main
