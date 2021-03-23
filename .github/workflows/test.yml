@@ -37,7 +37,6 @@ jobs:
 
       - name: login
         env:
-          ALI_LOGIN: ${{ secrets.ALI_DOCKER_REGISTRY_LOGIN }}
           ALI_USERNAME: ${{ secrets.ALI_USERNAME }}
           ALI_PASSWORD: ${{ secrets.ALI_PASSWORD }}
           ALI_LOGIN_URL: ${{ secrets.ALI_LOGIN_URL }}
@@ -51,8 +50,6 @@ jobs:
           mode: ngrok
         if: github.event.inputs.SSH == 'true'
         env:
-          ALI_LOGIN: ${{ secrets.ALI_DOCKER_REGISTRY_LOGIN }}
-          ALI_CONTAINER_URL: ${{ secrets.ALI_CONTAINER_URL }}
           # After sign up on the https://ngrok.com
           # You can find this token here: https://dashboard.ngrok.com/auth/your-authtoken
           NGROK_TOKEN: ${{ secrets.NGROK_TOKEN }}
