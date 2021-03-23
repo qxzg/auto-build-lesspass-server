@@ -93,11 +93,13 @@ jobs:
       - name: Push containers
         if: github.event.inputs.PUSH_CONTAINERS == 'true' && !cancelled()
         env:
-          ALI_LOGIN: ${{ secrets.ALI_DOCKER_REGISTRY_LOGIN }}
+          ALI_USERNAME: ${{ secrets.ALI_USERNAME }}
+          ALI_PASSWORD: ${{ secrets.ALI_PASSWORD }}
+          ALI_LOGIN_URL: ${{ secrets.ALI_LOGIN_URL }}
           CONTAINER_URL: ${{ secrets.ALI_CONTAINER_URL }}
         run: |
+          docker login --username="${ALI_USERNAME}" --password "${ALI_PASSWORD}" ${ALI_LOGIN_URL}
           docker images
-          docker login $ALI_LOGIN
           docker tag $CONTAINER_URL/lesspass-frontend $CONTAINER_URL/lesspass-frontend:actions
           docker tag $CONTAINER_URL/lesspass-backend $CONTAINER_URL/lesspass-backend:actions
           docker push $CONTAINER_URL/lesspass-frontend:actions
