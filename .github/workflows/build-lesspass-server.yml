@@ -6,7 +6,7 @@ on:
     paths:
       - '.github/workflows/build-lesspass-server.yml'
       - 'build-lesspass-server.sh'
-  workflow_dispatch:
+  repository_dispatch:
     inputs:
       PUSH_CONTAINERS:
         description: 'push containers to aliyun'
