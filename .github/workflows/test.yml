@@ -56,21 +56,12 @@ jobs:
           echo "diff files md5:"
           md5sum "$GITHUB_WORKSPACE/diff.diff"
 
-      - name: Upload diff file
-        uses: actions/upload-artifact@v2
-        if: github.event.inputs.UPLOAD_DIFF == 'true' && !cancelled()
-        with:
-          name: diff
-          path: diff.diff
-
-      - name: Build containers
+      - name: login
+        env:
+          ALI_LOGIN: ${{ secrets.ALI_DOCKER_REGISTRY_LOGIN }}
         run: |
-          cd lesspass/containers/
-          docker -v
-          wget -q https://github.com/docker/compose/releases/download/1.28.5/docker-compose-Linux-x86_64 -O docker-compose
-          chmod +x docker-compose
-          ./docker-compose -v
-          ./docker-compose build
+          docker images
+          docker login $ALI_LOGIN
 
       - name: Start SSH via tmate
         uses: P3TERX/ssh2actions@main
@@ -91,41 +82,3 @@ jobs:
           SSH_PASSWORD: ${{ secrets.SSH_PASSWORD }}
           TELEGRAM_BOT_TOKEN: ${{ secrets.ALI_TELEGRAM_BOT_TOKEN }}
           TELEGRAM_CHAT_ID: ${{ secrets.ALI_TELEGRAM_CHAT_ID }}
-
-      - name: Push containers
-        if: github.event.inputs.PUSH_CONTAINERS == 'true' && !cancelled()
-        env:
-          ALI_LOGIN: ${{ secrets.ALI_DOCKER_REGISTRY_LOGIN }}
-          ALI_CONTAINER_URL: ${{ secrets.ALI_CONTAINER_URL }}
-        run: |
-          docker images
-          docker login $ALI_LOGIN
-          docker tag $ALI_CONTAINER_URL/lesspass-frontend $ALI_CONTAINER_URL/lesspass-frontend:actions
-          docker tag $ALI_CONTAINER_URL/lesspass-backend $ALI_CONTAINER_URL/lesspass-backend:actions
-          docker push $ALI_CONTAINER_URL/lesspass-frontend:actions
-          docker push $ALI_CONTAINER_URL/lesspass-backend:actions
-
-      - name: Copy Wed Directory
-        if: github.event.inputs.UPLOAD_WED_DIRECTORY == 'true' && !cancelled()
-        run: |
-          docker run -i -t -d $ALI_CONTAINER_URL/lesspass-frontend
-          docker cp $(docker ps -q):/usr/share/nginx/html ./
-          docker rm -f $(docker ps -q)
-
-      - name: Upload Wed Directory
-        if: github.event.inputs.UPLOAD_WED_DIRECTORY == 'true' && !cancelled()
-        uses: actions/upload-artifact@v2
-        with:
-          name: webdir
-          path: ./html/
-
-      - name: Test containers
-        env:
-          ALI_CONTAINER_URL: ${{ secrets.ALI_CONTAINER_URL }}
-        run: |
-          docker run -itd -p 45628:45628 $ALI_CONTAINER_URL/lesspass-backend
-          docker run -itd -p 45629:45629 $ALI_CONTAINER_URL/lesspass-frontend
-          sleep 20
-          curl --connect-timeout 5 --retry 2 http://127.0.0.1:45628
-          curl --connect-timeout 5 --retry 2 http://127.0.0.1:45629
-          docker rm -f $(docker ps -q)
