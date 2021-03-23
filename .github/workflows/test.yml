@@ -35,27 +35,6 @@ jobs:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v2
 
-      - name: Cloen lesspass source code
-        run: git clone https://github.com/lesspass/lesspass.git
-
-      - name: Load custom configuration
-        env:
-          CONTAINER_DOMAIN: ${{ secrets.CONTAINER_DOMAIN }}
-          ALI_CONTAINER_URL: ${{ secrets.ALI_CONTAINER_URL }}
-          CONTAINER_PATH: ${{ secrets.CONTAINER_PATH }}
-          DEFAULT_FROM_EMAIL: ${{ secrets.DEFAULT_FROM_EMAIL }}
-          EMAIL_HOST: ${{ secrets.EMAIL_HOST }}
-          EMAIL_HOST_USER: ${{ secrets.EMAIL_HOST_USER }}
-          EMAIL_HOST_PASSWORD: ${{ secrets.EMAIL_HOST_PASSWORD }}
-        run: |
-          chmod +x build-lesspass-server.sh
-          mv build-lesspass-server.sh lesspass/
-          cd lesspass/
-          ./build-lesspass-server.sh
-          git diff >> "$GITHUB_WORKSPACE/diff.diff"
-          echo "diff files md5:"
-          md5sum "$GITHUB_WORKSPACE/diff.diff"
-
       - name: login
         env:
           ALI_LOGIN: ${{ secrets.ALI_DOCKER_REGISTRY_LOGIN }}
