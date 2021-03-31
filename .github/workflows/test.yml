@@ -23,8 +23,6 @@ on:
         description: 'SSH connection to Actions'
         required: true
         default: 'false'
-#  watch:
-#    types: started
 
 jobs:
   build:
@@ -40,15 +38,12 @@ jobs:
           ALI_USERNAME: ${{ secrets.ALI_USERNAME }}
           ALI_PASSWORD: ${{ secrets.ALI_PASSWORD }}
           ALI_LOGIN_URL: ${{ secrets.ALI_LOGIN_URL }}
-        run: |
-          docker images
-          docker login --username="${ALI_USERNAME}" --password "${ALI_PASSWORD}" ${ALI_LOGIN_URL}
-
+        run: docker login --username="${ALI_USERNAME}" --password "${ALI_PASSWORD}" ${ALI_LOGIN_URL}
+  
       - name: Start SSH via tmate
         uses: P3TERX/ssh2actions@main
         with:
           mode: ngrok
-        if: github.event.inputs.SSH == 'true'
         env:
           # After sign up on the https://ngrok.com
           # You can find this token here: https://dashboard.ngrok.com/auth/your-authtoken
