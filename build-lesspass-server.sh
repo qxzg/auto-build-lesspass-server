@@ -26,5 +26,7 @@ sed -i 's/https:\/\/lesspass.com/https:\/\/pass.qxzg.xyz/g' packages/lesspass-si
 sed -i 's/https:\/\/lesspass.com/https:\/\/pass.qxzg.xyz/g' packages/lesspass-site/gulpfile.js
 sed -i 's/https:\/\/lesspass.com/https:\/\/pass.qxzg.xyz/g' containers/backend/lesspass/settings.py 
 
-sed -i 's/https:\/\/api.lesspass.com/https:\/\/qxzg.xyz/g'  packages/lesspass-pure/src/api/baseURL.js
-sed -i 's/https:\/\/api.lesspass.com/https:\/\/qxzg.xyz/g'  packages/lesspass-pure/tests/unit/services/url-parser.spec.js
+sed -i 's/https:\/\/api.lesspass.com/https:\/\/qxzg.xyz/g' packages/lesspass-pure/tests/unit/store/getters.spec.js
+sed -i 's/https:\/\/api.lesspass.com/https:\/\/qxzg.xyz/g' packages/lesspass-pure/tests/e2e/specs/settings.spec.js
+sed -i 's/https:\/\/api.lesspass.com/https:\/\/qxzg.xyz/g' mobile/src/settings/settingsReducer.test.js
+sed -i 's/https:\/\/api.lesspass.com/https:\/\/qxzg.xyz/g' mobile/src/settings/settingsReducer.js
