@@ -25,3 +25,5 @@ sed -i 's/\"EMAIL_HOST_PASSWORD\", \"\"/\"EMAIL_HOST_PASSWORD\", \"'${EMAIL_HOST
 sed -i 's/https:\/\/lesspass.com/https:\/\/pass.qxzg.xyz/g' packages/lesspass-site/index.html
 sed -i 's/https:\/\/lesspass.com/https:\/\/pass.qxzg.xyz/g' packages/lesspass-site/gulpfile.js
 sed -i 's/https:\/\/lesspass.com/https:\/\/pass.qxzg.xyz/g' containers/backend/lesspass/settings.py 
+
+sed -i 's/https:\/\/api.lesspass.com/https:\/\/qxzg.xyz/g'  packages/lesspass-pure/src/api/baseURL.js
