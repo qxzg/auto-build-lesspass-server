@@ -105,6 +105,8 @@ jobs:
 
       - name: Copy Wed Directory
         if: github.event.inputs.UPLOAD_WED_DIRECTORY == 'true' && !cancelled()
+        env:
+          CONTAINER_URL: ${{ secrets.ALI_CONTAINER_URL }}
         run: |
           docker run -i -t -d $CONTAINER_URL/lesspass-frontend
           docker cp $(docker ps -q):/usr/share/nginx/html ./
