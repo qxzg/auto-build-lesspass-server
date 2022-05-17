@@ -51,7 +51,7 @@ jobs:
           cd lesspass/
           ./build-lesspass-server.sh
           git diff >> "$GITHUB_WORKSPACE/diff.diff"
-          echo "diff files md5:"
+          echo "diff files md5:"·
           md5sum "$GITHUB_WORKSPACE/diff.diff"
 
       - name: Upload diff file
@@ -83,7 +83,7 @@ jobs:
         run: |
           cd lesspass/containers/
           docker -v
-          wget -q https://github.com/docker/compose/releases/download/v2.2.3/docker-compose-linux-x86_64 -O docker-compose
+          wget -q https://github.com/docker/compose/releases/latest/download/docker-compose-linux-x86_64 -O docker-compose
           chmod +x docker-compose
           ./docker-compose -v
           ./docker-compose build
