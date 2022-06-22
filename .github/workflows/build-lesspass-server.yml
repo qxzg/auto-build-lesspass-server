@@ -123,9 +123,9 @@ jobs:
         env:
           CONTAINER_URL: ${{ secrets.ALI_CONTAINER_URL }}
         run: |
-          docker run -itd -p 45628:45628 $CONTAINER_URL/lesspass-backend
-          docker run -itd -p 45629:45629 $CONTAINER_URL/lesspass-frontend
+          docker run -itd -p 11004:11004 $CONTAINER_URL/lesspass-backend
+          docker run -itd -p 11003:11003 $CONTAINER_URL/lesspass-frontend
           sleep 20
-          curl --connect-timeout 5 --retry 2 http://127.0.0.1:45628
-          curl --connect-timeout 5 --retry 2 http://127.0.0.1:45629
+          curl --connect-timeout 5 --retry 2 http://127.0.0.1:11004
+          curl --connect-timeout 5 --retry 2 http://127.0.0.1:11003
           docker rm -f $(docker ps -q)
